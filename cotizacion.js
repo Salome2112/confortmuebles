@@ -59,9 +59,7 @@ window.agregarProducto = function () {
   document.getElementById("total").innerText = total.toFixed(2);
 };
 
-/* =========================
-   GUARDAR COTIZACIÓN
-========================= */
+
 window.guardarCotizacion = function () {
   if (productosCotizados.length === 0) {
     alert("No hay productos en la cotización");
@@ -76,16 +74,13 @@ window.guardarCotizacion = function () {
     productos: productosCotizados
   });
 
-  alert("Cotización guardada ✅");
+  alert("Cotización guardada ");
 
-  // Reiniciar
+
   total = 0;
   productosCotizados = [];
   document.getElementById("detalle").innerHTML = "";
   document.getElementById("total").innerText = "0.00";
 };
 
-/* =========================
-   INICIAR
-========================= */
 cargarProductos();

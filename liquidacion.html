@@ -2,20 +2,600 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Liquidación</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liquidación - Sistema de Ventas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #e9f5ee;
+      --surface: #e9f5ee;
+      --text-primary: #1f3d2b;
+      --text-secondary: #4b6b5a;
+      --accent: #22c55e;
+      --accent-light: #4ade80;
+      --accent-dark: #16a34a;
+      --shadow-light: #ffffff;
+      --shadow-dark: #c9e2d4;
+      --warning: #f59e0b;
+      --success: #10b981;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding-bottom: 50px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: var(--surface);
+      border-radius: 20px;
+      box-shadow: 
+        10px 10px 20px var(--shadow-dark),
+        -10px -10px 20px var(--shadow-light);
+    }
+
+    .back-btn {
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 15px;
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 24px;
+      box-shadow: 
+        6px 6px 12px var(--shadow-dark),
+        -6px -6px 12px var(--shadow-light);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-btn:active {
+      box-shadow: 
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light);
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .icon-btn {
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 15px;
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 22px;
+      box-shadow: 
+        6px 6px 12px var(--shadow-dark),
+        -6px -6px 12px var(--shadow-light);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-btn:active {
+      box-shadow: 
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light);
+    }
+
+    /* Status Badge */
+    .status-badge {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 20px 30px;
+      margin-bottom: 25px;
+      text-align: center;
+      box-shadow: 
+        10px 10px 20px var(--shadow-dark),
+        -10px -10px 20px var(--shadow-light);
+    }
+
+    .status-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .status-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Info Card */
+    .info-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 25px;
+      box-shadow: 
+        10px 10px 20px var(--shadow-dark),
+        -10px -10px 20px var(--shadow-light);
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .info-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Total Section */
+    .total-section {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      border-radius: 20px;
+      padding: 40px 30px;
+      margin-bottom: 25px;
+      box-shadow: 
+        10px 10px 30px rgba(34, 197, 94, 0.3);
+      color: white;
+      text-align: center;
+    }
+
+    .total-label {
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      opacity: 0.9;
+      letter-spacing: 2px;
+    }
+
+    .total-amount {
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* Payment Details */
+    .payment-details {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 
+        10px 10px 20px var(--shadow-dark),
+        -10px -10px 20px var(--shadow-light);
+    }
+
+    .details-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: var(--surface);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      box-shadow: 
+        6px 6px 12px var(--shadow-dark),
+        -6px -6px 12px var(--shadow-light);
+    }
+
+    .detail-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .detail-value {
+      font-size: 15px;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .action-btn {
+      padding: 20px;
+      border: none;
+      border-radius: 18px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success), #34d399);
+      color: white;
+      box-shadow: 
+        8px 8px 16px var(--shadow-dark),
+        -8px -8px 16px var(--shadow-light),
+        0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        8px 8px 16px var(--shadow-dark),
+        -8px -8px 16px var(--shadow-light),
+        0 12px 30px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-success:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: var(--surface);
+      color: var(--accent);
+      box-shadow: 
+        8px 8px 16px var(--shadow-dark),
+        -8px -8px 16px var(--shadow-light);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      box-shadow: 
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light);
+      transform: translateY(0);
+    }
+
+    .btn-icon {
+      font-size: 20px;
+    }
+
+    /* Notes Section */
+    .notes-section {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 
+        10px 10px 20px var(--shadow-dark),
+        -10px -10px 20px var(--shadow-light);
+    }
+
+    .notes-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 15px;
+      background: var(--surface);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      resize: vertical;
+      min-height: 100px;
+      box-shadow: 
+        inset 6px 6px 12px var(--shadow-dark),
+        inset -6px -6px 12px var(--shadow-light);
+      transition: all 0.3s;
+    }
+
+    textarea:focus {
+      outline: none;
+      box-shadow: 
+        inset 4px 4px 8px var(--shadow-dark),
+        inset -4px -4px 8px var(--shadow-light),
+        0 0 0 3px rgba(34, 197, 94, 0.2);
+    }
+
+    /* Success Animation */
+    .success-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .success-modal {
+      background: var(--surface);
+      border-radius: 30px;
+      padding: 50px;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 
+        20px 20px 40px var(--shadow-dark),
+        -20px -20px 40px var(--shadow-light);
+    }
+
+    .success-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+
+    .success-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .success-message {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .header-title {
+        font-size: 18px;
+      }
+
+      .total-amount {
+        font-size: 42px;
+      }
+    }
+  </style>
 </head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <button class="back-btn" onclick="window.history.back()">←</button>
+      <h1 class="header-title">💰 Liquidación</h1>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="imprimirLiquidacion()">🖨️</button>
+        <button class="icon-btn" onclick="compartir()">📤</button>
+      </div>
+    </div>
 
-<body class="container mt-4">
+    <!-- Status Badge -->
+    <div class="status-badge">
+      <div class="status-icon">⏳</div>
+      <div class="status-text" id="statusText">Pendiente de pago</div>
+    </div>
 
-<h2>🤝 Liquidación</h2>
+    <!-- Info Card -->
+    <div class="info-card">
+      <div class="info-row">
+        <span class="info-label">Cliente</span>
+        <span class="info-value" id="clienteNombre">ING Juan Salas</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Fecha</span>
+        <span class="info-value" id="fecha">8/1/2026</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Hora</span>
+        <span class="info-value" id="hora">14:30:00</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">N° Liquidación</span>
+        <span class="info-value" id="numeroLiquidacion">#LIQ-001</span>
+      </div>
+    </div>
 
-<p>Total a pagar: $<span id="totalLiquidacion">0</span></p>
+    <!-- Total Section -->
+    <div class="total-section">
+      <div class="total-label">Total a Pagar</div>
+      <div class="total-amount">$<span id="totalLiquidacion">0.00</span></div>
+    </div>
 
-<button class="btn btn-success" onclick="pagar()">Marcar como Pagado</button>
-<button class="btn btn-primary" onclick="generarPDF()">Descargar Liquidación</button>
+    <!-- Payment Details -->
+    <div class="payment-details">
+      <div class="details-title">Desglose de Pago</div>
+      <div class="detail-item">
+        <span class="detail-label">Subtotal</span>
+        <span class="detail-value">$<span id="subtotal">0.00</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">IVA (15%)</span>
+        <span class="detail-value">$<span id="iva">0.00</span></span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Descuento</span>
+        <span class="detail-value" style="color: var(--success);">-$<span id="descuento">0.00</span></span>
+      </div>
+    </div>
 
-<script src="js/liquidacion.js"></script>
-<script src="js/pdf.js"></script>
+    <!-- Notes Section -->
+    <div class="notes-section">
+      <div class="notes-title">Notas adicionales</div>
+      <textarea id="notas" placeholder="Agregar notas o comentarios sobre esta liquidación..."></textarea>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn btn-success" onclick="pagar()">
+        <span class="btn-icon">✓</span>
+        <span>Marcar Pagado</span>
+      </button>
+      <button class="action-btn btn-primary" onclick="generarPDF()">
+        <span class="btn-icon">📄</span>
+        <span>Descargar PDF</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Success Overlay -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-modal">
+      <div class="success-icon">✓</div>
+      <h2 class="success-title">¡Pago Registrado!</h2>
+      <p class="success-message">La liquidación ha sido marcada como pagada exitosamente.</p>
+    </div>
+  </div>
+
+  <script>
+    // Datos de ejemplo
+    let liquidacionData = {
+      cliente: 'ING Juan Salas',
+      numeroLiquidacion: '#LIQ-001',
+      subtotal: 2500.00,
+      iva: 375.00, // 15% de 2500
+      descuento: 150.00,
+      total: 2725.00, // 2500 + 375 - 150
+      estado: 'pendiente'
+    };
+
+    // Inicializar
+    function inicializar() {
+      document.getElementById('clienteNombre').textContent = liquidacionData.cliente;
+      document.getElementById('numeroLiquidacion').textContent = liquidacionData.numeroLiquidacion;
+      document.getElementById('subtotal').textContent = liquidacionData.subtotal.toFixed(2);
+      document.getElementById('iva').textContent = liquidacionData.iva.toFixed(2);
+      document.getElementById('descuento').textContent = liquidacionData.descuento.toFixed(2);
+      document.getElementById('totalLiquidacion').textContent = liquidacionData.total.toLocaleString('es-ES', { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2 
+      });
+      
+      actualizarFechaHora();
+      setInterval(actualizarFechaHora, 1000);
+    }
+
+    // Actualizar fecha y hora
+    function actualizarFechaHora() {
+      const ahora = new Date();
+      document.getElementById('fecha').textContent = 
+        `${ahora.getDate()}/${ahora.getMonth() + 1}/${ahora.getFullYear()}`;
+      document.getElementById('hora').textContent = ahora.toLocaleTimeString('es-ES');
+    }
+
+    // Marcar como pagado
+    function pagar() {
+      if (confirm('¿Confirmar que el pago ha sido recibido?')) {
+        liquidacionData.estado = 'pagado';
+        
+        // Mostrar overlay de éxito
+        const overlay = document.getElementById('successOverlay');
+        overlay.style.display = 'flex';
+        
+        // Actualizar estado visual
+        const statusBadge = document.querySelector('.status-badge');
+        statusBadge.querySelector('.status-icon').textContent = '✓';
+        statusBadge.querySelector('.status-text').textContent = 'PAGADO';
+        statusBadge.style.background = 'linear-gradient(135deg, var(--success), #34d399)';
+        statusBadge.style.color = 'white';
+        
+        // Ocultar overlay después de 2 segundos
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 2000);
+        
+        console.log('Liquidación marcada como pagada:', liquidacionData);
+      }
+    }
+
+    // Generar PDF
+    function generarPDF() {
+      alert('📄 Generando PDF de liquidación...\n\nCliente: ' + liquidacionData.cliente + '\nTotal: $' + liquidacionData.total.toFixed(2) + '\n\n(Integrar jsPDF aquí)');
+      
+      // Aquí integrarías jsPDF o similar
+      console.log('Generando PDF con datos:', liquidacionData);
+    }
+
+    // Imprimir liquidación
+    function imprimirLiquidacion() {
+      window.print();
+    }
+
+    // Compartir
+    function compartir() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Liquidación ' + liquidacionData.numeroLiquidacion,
+          text: `Liquidación para ${liquidacionData.cliente}\nTotal: $${liquidacionData.total.toFixed(2)}`,
+        });
+      } else {
+        alert('📤 Función de compartir\n\nCliente: ' + liquidacionData.cliente + '\nTotal: $' + liquidacionData.total.toFixed(2));
+      }
+    }
+
+    // Inicializar al cargar
+    inicializar();
+  </script>
 </body>
 </html>

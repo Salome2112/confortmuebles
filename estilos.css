@@ -1,21 +1,37 @@
 body {
   background: #f5f5f5;
+  font-family: Arial, sans-serif;
 }
 
 .opcion {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: 20px;
   text-decoration: none;
   color: #000;
   border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .opcion img {
-  width: 80px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
   margin-bottom: 10px;
 }
 
+
 .opcion p {
+  margin: 0;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
+}
+
+.col-6 {
+  vertical-align: middle;
+  width: 10px;
 }

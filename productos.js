@@ -3,7 +3,7 @@ function guardarProducto() {
 
   let nombre = document.getElementById("nombreProducto").value;
   let precio = document.getElementById("precioProducto").value;
-
+  
   if (nombre === "" || precio === "") {
     alert("Complete los campos");
     return;
