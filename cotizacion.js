@@ -1,40 +1,37 @@
 import { database } from "./firebase.js";
-import { ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import {
+  ref,
+  push,
+  onValue
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 let total = 0;
 let productosCotizados = [];
 
-/* =========================
-   CARGAR PRODUCTOS
-========================= */
 function cargarProductos() {
-  const productos = JSON.parse(localStorage.getItem("productos")) || [];
   const select = document.getElementById("productosSelect");
 
-  select.innerHTML = '<option value="">Seleccione un producto</option>';
+  onValue(ref(database, "productos"), (snapshot) => {
+    select.innerHTML = '<option value="">Seleccione un producto</option>';
 
-  productos.forEach(p => {
-    const option = document.createElement("option");
-    option.value = JSON.stringify(p); // guardamos todo el producto
-    option.textContent = `${p.nombre} - $${p.precio}`;
-    select.appendChild(option);
+    snapshot.forEach((child) => {
+      const p = child.val();
+
+      const option = document.createElement("option");
+      option.value = JSON.stringify(p);
+      option.textContent = `${p.nombre} - $${p.precio}`;
+
+      select.appendChild(option);
+    });
   });
 }
 
-/* =========================
-   AGREGAR PRODUCTO
-========================= */
 window.agregarProducto = function () {
   const select = document.getElementById("productosSelect");
   const cantidad = Number(document.getElementById("cantidad").value);
 
-  if (!select.value) {
-    alert("Seleccione un producto");
-    return;
-  }
-
-  if (cantidad <= 0) {
-    alert("Cantidad inválida");
+  if (!select.value || cantidad <= 0) {
+    alert("Datos inválidos");
     return;
   }
 
@@ -59,28 +56,19 @@ window.agregarProducto = function () {
   document.getElementById("total").innerText = total.toFixed(2);
 };
 
-
 window.guardarCotizacion = function () {
   if (productosCotizados.length === 0) {
-    alert("No hay productos en la cotización");
+    alert("No hay productos");
     return;
   }
 
-  const cotizacionRef = ref(database, "cotizaciones");
-
-  push(cotizacionRef, {
+  push(ref(database, "cotizaciones"), {
     fecha: new Date().toLocaleString(),
     total,
     productos: productosCotizados
   });
 
-  alert("Cotización guardada ");
-
-
-  total = 0;
-  productosCotizados = [];
-  document.getElementById("detalle").innerHTML = "";
-  document.getElementById("total").innerText = "0.00";
+  alert("Cotización guardada");
 };
 
 cargarProductos();

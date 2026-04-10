@@ -1,11 +1,8 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA1AjcS88Q7S3Uu6BCMISolavcEJIZy78o",
+  apiKey: "TU_API_KEY",
   authDomain: "confortmuebles-5f964.firebaseapp.com",
   projectId: "confortmuebles-5f964",
   storageBucket: "confortmuebles-5f964.firebasestorage.app",
@@ -13,5 +10,7 @@ const firebaseConfig = {
   appId: "1:880968466284:web:f9495087ba1aec4b82bd49"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+export { database };

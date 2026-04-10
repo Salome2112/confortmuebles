@@ -1,24 +1,41 @@
-function guardarCliente() {
-  let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+import { database } from "./firebase.js";
+import {
+  ref,
+  push,
+  onValue
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  let nombre = document.getElementById("nombre").value;
-  let telefono = document.getElementById("telefono").value;
-  let direccion = document.getElementById("direccion").value;
-  let email = document.getElementById("email").value;
+window.guardarCliente = function () {
+  const nombre = document.getElementById("nombre").value;
+  const telefono = document.getElementById("telefono").value;
+  const direccion = document.getElementById("direccion").value;
+  const email = document.getElementById("email").value;
 
-  clientes.push({nombre, telefono, direccion, email});
-  localStorage.setItem("clientes", JSON.stringify(clientes));
+  if (!nombre || !telefono || !direccion || !email) {
+    alert("Complete todos los campos");
+    return;
+  }
 
-  mostrarClientes();
-}
+  push(ref(database, "clientes"), {
+    nombre,
+    telefono,
+    direccion,
+    email
+  });
+
+  alert("Cliente guardado");
+};
 
 function mostrarClientes() {
-  let clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-  let lista = document.getElementById("listaClientes");
-  lista.innerHTML = "";
+  const lista = document.getElementById("listaClientes");
 
-  clientes.forEach(c => {
-    lista.innerHTML += `<li>${c.nombre} - ${c.telefono}</li>`;
+  onValue(ref(database, "clientes"), (snapshot) => {
+    lista.innerHTML = "";
+
+    snapshot.forEach((child) => {
+      const c = child.val();
+      lista.innerHTML += `<li>${c.nombre} - ${c.telefono}</li>`;
+    });
   });
 }
 

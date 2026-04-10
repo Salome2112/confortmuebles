@@ -1,31 +1,41 @@
-function guardarProducto() {
-  let productos = JSON.parse(localStorage.getItem("productos")) || [];
+import { database } from "./firebase.js";
+import {
+  ref,
+  push,
+  onValue
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  let nombre = document.getElementById("nombreProducto").value;
-  let precio = document.getElementById("precioProducto").value;
-  
-  if (nombre === "" || precio === "") {
+window.guardarProducto = function () {
+  const nombre = document.getElementById("nombreProducto").value;
+  const precio = document.getElementById("precioProducto").value;
+
+  if (!nombre || !precio) {
     alert("Complete los campos");
     return;
   }
 
-  productos.push({ nombre, precio });
-  localStorage.setItem("productos", JSON.stringify(productos));
+  push(ref(database, "productos"), {
+    nombre,
+    precio: Number(precio)
+  });
 
-  mostrarProductos();
-}
+  alert("Producto guardado");
+};
 
 function mostrarProductos() {
-  let productos = JSON.parse(localStorage.getItem("productos")) || [];
-  let lista = document.getElementById("listaProductos");
-  lista.innerHTML = "";
+  const lista = document.getElementById("listaProductos");
 
-  productos.forEach((p, i) => {
-    lista.innerHTML += `
-      <li class="list-group-item">
-        ${p.nombre} - $${p.precio}
-      </li>
-    `;
+  onValue(ref(database, "productos"), (snapshot) => {
+    lista.innerHTML = "";
+
+    snapshot.forEach((child) => {
+      const p = child.val();
+      lista.innerHTML += `
+        <li class="list-group-item">
+          ${p.nombre} - $${p.precio}
+        </li>
+      `;
+    });
   });
 }
 
